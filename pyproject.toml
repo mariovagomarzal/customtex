@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "customtex"
+version = "0.1.0"
+description = "A CLI utility for setting up LaTeX projects"
+authors = ["Mario Vago Marzal <mariovagomarzal@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.1"
+mkdocs-material = "^9.0.12"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
