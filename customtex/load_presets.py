@@ -48,6 +48,7 @@ def load_hypersetup(setup_name):
         return json.load(file)[setup_name]
     
 def get_hypersetup(setup_name):
+    return "\n".join(load_hypersetup(setup_name))
 
 # Theorem styles
 def load_theoremstyle(style_name):
@@ -79,7 +80,7 @@ def load_macros():
 
 def get_macros(macros_names):
     macros = load_macros()
-    return "".join([macros[name] for name in macros_names])
+    return "\n\n".join(["\n".join(macros[name]) for name in macros_names])
 
 # Templates
 def load_templates():
