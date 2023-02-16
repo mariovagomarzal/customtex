@@ -48,7 +48,29 @@ def load_hypersetup(setup_name):
         return json.load(file)[setup_name]
     
 def get_hypersetup(setup_name):
-    return "".join(load_hypersetup(setup_name))
+
+# Theorem styles
+def load_theoremstyle(style_name):
+    with open(PRESETS_PATH / "theoremstyles.json", "r") as file:
+        return json.load(file)[style_name]
+    
+def get_theoremstyle(style_name, theoremsparent):
+    theorems_style = load_theoremstyle(style_name)
+
+    output = ""
+    if theorems_style["styles"]:
+        output += "\n".join(theorems_style["styles"]) + "\n"
+    
+    for theorem in list(theorems_style["enviorments"].keys()):
+        theorem_style = theorems_style["enviorments"][theorem]
+        if theorem_style:
+            output += f"\\declaretheorem[name=\\{theorem}name, style={theorem_style}, numberwithin={theoremsparent}]{{{theorem}}}\n"
+            output += f"\\declaretheorem[name=\\{theorem}name, style={theorem_style}, numbered=no]{{{theorem}*}}\n"
+        else:
+            output += f"\\declaretheorem[name=\\{theorem}name, numberwithin={theoremsparent}]{{{theorem}}}\n"
+            output += f"\\declaretheorem[name=\\{theorem}name, numbered=no]{{{theorem}*}}\n"
+
+    return output[:-1]
 
 # Macros
 def load_macros():
