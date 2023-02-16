@@ -1,0 +1,40 @@
+{
+    "napkin": {
+        "article": [
+            "\\pretitle{\\begin{center}\\LARGE\\sffamily\\bfseries}",
+            "\\posttitle{\\end{center}}\n",
+            "\\preauthor{\\begin{center}\\large\\sffamily\\begin{tabular}[t]{c}}",
+            "\\postauthor{\\end{tabular}\\end{center}}\n",
+            "\\predate{\\begin{center}\\large\\sffamily}",
+            "\\postdate{\\end{center}}\n"
+        ],
+        "report, book": [
+            "\\pretitle{\\begin{center}\\huge\\sffamily\\bfseries}",
+            "\\posttitle{\\end{center}}\n",
+            "\\preauthor{\\begin{center}\\Large\\sffamily\\begin{tabular}[t]{c}}",
+            "\\postauthor{\\end{tabular}\\end{center}}\n",
+            "\\predate{\\begin{center}\\Large\\sffamily}",
+            "\\postdate{\\end{center}}\n"
+        ],
+        "default": "article"
+    },
+    "ruled": {
+        "article": [
+            "\\pretitle{\\hrule\\begin{center}\\Large\\sffamily\\bfseries\\color{MidnightBlue}}",
+            "\\posttitle{\\end{center}\\hrule}\n",
+            "\\preauthor{\\begin{center}\\large\\sffamily\\begin{tabular}[t]{c}}",
+            "\\postauthor{\\end{tabular}\\end{center}}\n",
+            "\\predate{\\begin{center}\\large\\sffamily}",
+            "\\postdate{\\end{center}}\n"
+        ],
+        "report, book": [
+            "\\pretitle{\\hrule\\begin{center}\\LARGE\\sffamily\\bfseries\\color{MidnightBlue}}\\posttitle{\\end{center}\\hrule}",
+            "\\posttitle{\\end{center}\\hrule}\n",
+            "\\preauthor{\\begin{center}\\Large\\sffamily\\begin{tabular}[t]{c}}",
+            "\\postauthor{\\end{tabular}\\end{center}}\n",
+            "\\predate{\\begin{center}\\Large\\sffamily}",
+            "\\postdate{\\end{center}}\n"
+        ],
+        "default": "article"
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "english": {
+        "mathnames": {
+            "theoremname": "Theorem",
+            "propositionname": "Proposition",
+            "corollaryname": "Corollary",
+            "lemmaname": "Lemma",
+            "conjecturename": "Conjecture",
+            "definitionname": "Definition",
+            "notationname": "Notation",
+            "remarkname": "Remark",
+            "examplename": "Example",
+            "problemname": "Problem",
+            "questionname": "Question",
+            "exercisename": "Exercise",
+            "solutionname": "Solution"
+        }
+    },
+    "spanish": {
+        "mathnames": {
+            "theoremname": "Teorema",
+            "propositionname": "Proposición",
+            "corollaryname": "Corolario",
+            "lemmaname": "Lema",
+            "conjecturename": "Conjetura",
+            "definitionname": "Definición",
+            "notationname": "Notación",
+            "remarkname": "Nota",
+            "examplename": "Ejemplo",
+            "problemname": "Problema",
+            "questionname": "Custión",
+            "exercisename": "Ejercicio",
+            "solutionname": "Solución"
+        }
+    },
+    "catalan": {
+        "mathnames": {
+            "theoremname": "Teorema",
+            "propositionname": "Proposició",
+            "corollaryname": "Coro\\lgem{}ari",
+            "lemmaname": "Lema",
+            "conjecturename": "Conjectura",
+            "definitionname": "Definició",
+            "notationname": "Notació",
+            "remarkname": "Nota",
+            "examplename": "Exemple",
+            "problemname": "Problema",
+            "questionname": "Qüestió",
+            "exercisename": "Exercici",
+            "solutionname": "Solució"
+        }
+    }
+}
