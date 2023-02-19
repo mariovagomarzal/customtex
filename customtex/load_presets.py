@@ -15,7 +15,7 @@ def get_language(language):
     with open(PRESETS_PATH / "languages.json", "r") as file:
         return json.load(file)[language]
 
-# Title, section and header styles
+# Title and section styles
 def load_style(item, style_name):
     with open(PRESETS_PATH / f"{item}styles.json", "r") as file:
         return json.load(file)[style_name]

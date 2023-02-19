@@ -44,7 +44,6 @@ def get_parser():
 
     # Sections and headers
     misc_group.add_argument("--sectionstyle", choices=get_choices("sectionstyles"), help="Section style to use for the document") 
-    misc_group.add_argument("--headerstyle", choices=get_choices("headerstyles"), help="Header style to use for the document")
 
     # Package "hyperref"
     misc_group.add_argument("--hyperref", action="store_true", help="Include 'hyperref' package")
