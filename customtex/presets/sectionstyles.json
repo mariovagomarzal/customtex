@@ -1,0 +1,59 @@
+{
+    "napkin": {
+        "article": [
+            "\\titleformat{\\section}{\\huge\\sffamily\\bfseries}",
+            "  {\\color{purple}{\\normalfont\\sffamily\\S}\\thesection}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\subsection}{\\LARGE\\sffamily\\bfseries}",
+            "  {\\color{purple}{\\normalfont\\sffamily\\S}\\thesubsection}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\subsubsection}{\\Large\\sffamily\\bfseries}",
+            "  {\\color{purple}{\\normalfont\\sffamily\\S}\\thesubsubsection}",
+            "  {1ex}{}\n"
+        ],
+        "report, book": [
+            "\\titleformat{\\part}[display]{\\Huge\\bfseries\\filcenter}",
+            "  {\\color{purple}\\scalebox{2.5}{\\thepart}}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\chapter}{\\huge\\sffamily\\bfseries}",
+            "  {\\color{purple}\\scalebox{2.5}{\\thechapter}}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\section}{\\LARGE\\sffamily\\bfseries}",
+            "  {\\color{purple}{\\normalfont\\sffamily\\S}\\thesection}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\subsection}{\\Large\\sffamily\\bfseries}",
+            "  {\\color{purple}{\\normalfont\\sffamily\\S}\\thesubsection}",
+            "  {1ex}{}\n"
+        ],
+        "default": "article"
+    },
+    "ruled": {
+        "article": [
+            "\\titleformat{\\section}{\\LARGE\\sffamily\\bfseries}",
+            "  {\\huge\\color{purple}\\thesection}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\subsection}{\\Large\\sffamily\\bfseries}",
+            "  {\\LARGE\\color{purple}\\thesubsection}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\subsubsection}{\\large\\sffamily\\bfseries}",
+            "  {\\Large\\color{purple}\\thesubsubsection}",
+            "  {1ex}{}\n"
+        ],
+        "report, book": [
+            "\\titleformat{\\part}[display]{\\Huge\\bfseries\\filcenter}",
+            "  {\\partname{} \\color{purple}\\thepart}",
+            "  {1ex}{\\huge}\n",
+            "\\titleformat{\\chapter}[display]{\\LARGE\\sffamily\\bfseries}",
+            "  {\\filleft\\MakeUppercase{\\chaptertitlename} \\huge\\color{purple}\\thechapter}",
+            "  {4ex}{\\titlerule\\vspace{10pt}\\filright\\Large}",
+            "  [\\vspace{10pt}\\titlerule]\n",
+            "\\titleformat{\\section}{\\Large\\sffamily\\bfseries}",
+            "  {\\LARGE\\color{purple}\\thesection}",
+            "  {1ex}{}\n",
+            "\\titleformat{\\subsection}{\\large\\sffamily\\bfseries}",
+            "  {\\Large\\color{purple}\\thesubsection}",
+            "  {1ex}{}\n"
+        ],
+        "default": "report"
+    }
+}
