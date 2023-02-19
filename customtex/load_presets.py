@@ -48,28 +48,33 @@ def load_hypersetup(setup_name):
         return json.load(file)[setup_name]
     
 def get_hypersetup(setup_name):
-    return "\n".join(load_hypersetup(setup_name))
+    hypersetup = load_hypersetup(setup_name)
+    output = "\\hypersetup{\n"
+    output += "\n".join(hypersetup) + "\n}"
+    return output
 
 # Theorem styles
 def load_theoremstyle(style_name):
     with open(PRESETS_PATH / "theoremstyles.json", "r") as file:
         return json.load(file)[style_name]
     
-def get_theoremstyle(style_name, theoremsparent):
+def get_theoremstyle(style_name, theoremsparent, language):
     theorems_style = load_theoremstyle(style_name)
+    language = get_language(language)["mathnames"]
 
     output = ""
     if theorems_style["styles"]:
-        output += "\n".join(theorems_style["styles"]) + "\n"
+        output += "\n".join(theorems_style["styles"]) + "\n\n"
     
     for theorem in list(theorems_style["enviorments"].keys()):
         theorem_style = theorems_style["enviorments"][theorem]
+        theorem_name = language[theorem]
         if theorem_style:
-            output += f"\\declaretheorem[name=\\{theorem}name, style={theorem_style}, numberwithin={theoremsparent}]{{{theorem}}}\n"
-            output += f"\\declaretheorem[name=\\{theorem}name, style={theorem_style}, numbered=no]{{{theorem}*}}\n"
+            output += f"\\declaretheorem[name={theorem_name}, style={theorem_style}, numberwithin={theoremsparent}]{{{theorem}}}\n"
+            output += f"\\declaretheorem[name={theorem_name}, style={theorem_style}, numbered=no]{{{theorem}*}}\n"
         else:
-            output += f"\\declaretheorem[name=\\{theorem}name, numberwithin={theoremsparent}]{{{theorem}}}\n"
-            output += f"\\declaretheorem[name=\\{theorem}name, numbered=no]{{{theorem}*}}\n"
+            output += f"\\declaretheorem[name={theorem_name}, numberwithin={theoremsparent}]{{{theorem}}}\n"
+            output += f"\\declaretheorem[name={theorem_name}, numbered=no]{{{theorem}*}}\n"
 
     return output[:-1]
 
