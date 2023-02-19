@@ -21,7 +21,7 @@
     "colornames": {
         "styles": [
             "\\declaretheoremstyle[",
-            "  headfont=\\sffamilñl`y\\bfseries\\color{MediumBlue},",
+            "  headfont=\\sffamily\\bfseries\\color{MediumBlue},",
             "  headpunct={},",
             "  postheadspace=1em",
             "]{thmblue}",
