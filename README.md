@@ -30,7 +30,7 @@ This will create a LaTeX project with the following structure in the `path/to/di
 The `init` subcommand creates a project based on the options that the utility provides. Run `customtex init --help` to see the available options.
 
 ### The `template` subcommand
-The `template` subcommand creates a project based on a template. A template consist in a list of options from the `init` subcommand that are run when invoking the `template` option followed by the name of the template.
+The `template` subcommand creates a project based on a template. A template consist of a list of options from the `init` subcommand that are run when invoking the `template` option followed by the name of the template.
 
 Run `customtex template --help` to see the available templates.
 
