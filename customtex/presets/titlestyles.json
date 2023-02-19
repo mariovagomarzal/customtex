@@ -28,7 +28,7 @@
             "\\postdate{\\end{center}}\n"
         ],
         "report, book": [
-            "\\pretitle{\\hrule\\begin{center}\\LARGE\\sffamily\\bfseries\\color{MidnightBlue}}\\posttitle{\\end{center}\\hrule}",
+            "\\pretitle{\\hrule\\begin{center}\\LARGE\\sffamily\\bfseries\\color{MidnightBlue}}",
             "\\posttitle{\\end{center}\\hrule}\n",
             "\\preauthor{\\begin{center}\\Large\\sffamily\\begin{tabular}[t]{c}}",
             "\\postauthor{\\end{tabular}\\end{center}}\n",
