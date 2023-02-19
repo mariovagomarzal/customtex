@@ -91,7 +91,7 @@
             "\\declaretheoremstyle[",
             "  mdframed={style=bluebox},",
             "  headfont=\\sffamily\\bfseries\\color{MediumBlue},",
-            "  headpunct={\\[1ex]}",
+            "  headpunct={\\\\[1ex]}",
             "]{thmbluebox}",
             "\\declaretheoremstyle[",
             "  mdframed={style=redbox},",
