@@ -1,4 +1,4 @@
-# CustomTeX v0.1.0
+# CustomTeX v0.1.1
 
 ### A CLI utility for setting up LaTeX projects
 CustomTeX is a command line utility for setting up LaTeX projects based on some predefined styles for titles, section headers, theorems, etc.
