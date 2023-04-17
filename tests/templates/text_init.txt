@@ -1,0 +1,10 @@
+Culpa et <var:var1=deserunt> duis ex 
+deserunt veniam <var:var1> dolor anim.
+
+Lorem ad enim <var:var2> ea enim sunt <var:var2>.
+
+Eiusmod consequat <multi:multi1=opt1|opt2> esse laboris 
+sint ex est eu non excepteur <multi:multi1> labore qui ut.
+
+Fugiat voluptate amet <multi:multi2==1||3> 
+pariatur ex est proident <multi:multi2>.
