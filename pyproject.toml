@@ -16,7 +16,6 @@ string-color = "^1.2.3"
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"
 mkdocs-material = "^9.0.12"
-pathlib = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
