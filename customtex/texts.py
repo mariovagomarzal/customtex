@@ -1,4 +1,5 @@
 """This module contains the Text base class and its subclasses."""
+
 import re
 
 from customtex.configs import Config
@@ -6,7 +7,7 @@ from customtex.configs import Config
 
 # Parse text functions
 def parse(text: str, config: Config) -> list[str]:
-    """Parses the given text into a list of text or block tags (only top level).)"""
+    """Parses the given text into a list of text or block tags (only top level)."""
     parsed_text = []
 
     beg_block, end_block = config.block_regex()
@@ -41,7 +42,31 @@ def is_text(text: str, config: Config) -> bool:
     beg_block, _ = config.block_regex()
     return not re.fullmatch(beg_block, text.splitlines()[0])
 
+
 class Text():
+    """Base class for text units without blocks in it.
+
+    Attributes
+    ----------
+    text : str
+        The text of the tag
+    config : Config
+        The config used to parse to find tags
+    variables : dict[str, tuple[str, bool]]
+        A dictionary of variables and their default values
+    multi : dict[str, tuple[list[str], bool]]
+        A dictionary of multioptions and their possible values and default
+
+    Methods
+    -------
+    __init__(text: str, config: Config) -> None
+        Initializes the text with the given text and config
+        and parses the text to find variables and multioptions
+    replace(options: dict[str, str]) -> str
+        Returns the text with the given options replaced
+    process(options: dict[str, str], defaults=False) -> str
+        Returns the text with the given options replaced and
+        asks the user for the missing options"""
     text: str
     config: Config
     variables: dict[str, tuple[str, bool]]
@@ -110,6 +135,28 @@ class Text():
         return self.replace(options)
 
 class Block(Text): # FIXME: Use default values for blocks
+    """Subclass of Text for text units that are blocks.
+
+    Attributes
+    ----------
+    text : str
+        The text of the tag
+    config : Config
+        The config used to parse to find tags
+    name : str
+        The name of the block
+    blocks : dict[str, str]
+        A dictionary of blocks and their content
+
+    Methods
+    -------
+    __init__(text: str, config: Config) -> None
+        Initializes the text with the given text and config
+        and parses the text to find the different subblocks
+    process(options: dict[str, str], defaults=False) -> str
+        Returns the text of the block selected in the options or
+        asked to the user if not given after being parsed and processed
+        again with the given options"""
     name: str
     blocks: dict[str, str]
 
@@ -162,10 +209,3 @@ class Block(Text): # FIXME: Use default values for blocks
                 final_output += Block(block, self.config).process(options, defaults)
 
         return final_output
-
-class File():
-    name: str
-    parts: list[Text]
-
-class Template():
-    pass
