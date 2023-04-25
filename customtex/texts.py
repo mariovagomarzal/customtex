@@ -109,32 +109,59 @@ class Text():
 
         return self.replace(options)
 
-class Block(Text):
+class Block(Text): # FIXME: Use default values for blocks
+    name: str
     blocks: dict[str, str]
 
     def __init__(self, text: str, config: Config) -> None:
         self.text = text
         self.config = config
 
-        # Get blocks:
+        text_lines = text.splitlines()
+        beg_regex, _ = config.block_regex()
+        beg_tag = re.fullmatch(beg_regex, text_lines[0])
+        if beg_tag:
+            self.name = beg_tag.group(1)
+        else:
+            raise ValueError(f"Block '{text_lines[0]}' is not a valid block")
+
+        # Get blocks
+        self.blocks = {}
+        block_name = ""
+        for line in text_lines[1:-2]:
+            match = re.fullmatch(config.subblock_regex(self.name), line)
+            if match:
+                block_name = match.group(1)
+                if block_name in self.blocks:
+                    raise ValueError(f"Block '{block_name}' already exists")
+                else:
+                    self.blocks[block_name] = ""
+            else:
+                if block_name:
+                    self.blocks[block_name] += line + "\n"
+                else:
+                    raise ValueError(f"Block '{line}' is not a valid block")
 
     def process(self, options: dict[str, str], defaults=False) -> str:
-        # TODO: Use defaults
-        text = ""
+        """Returns the block with the given options replaced and the missing options asked to the user.
+        If defaults is True, the default values will be used instead of asking the user."""
+        if self.name not in options:
+            blocks = list(self.blocks.keys())
+            print(f"Choose block for '{self.name}':")
+            for i, block_name in enumerate(blocks):
+                print(f"  {i+1}. {block_name}")
+            # TODO: Check if input is valid
+            options[self.name] = blocks[int(input("Enter number: "))-1]
 
-        print("Choose block to use:")
-        for i, name in enumerate(self.blocks.keys()):
-            print(f"  {i+1}. {name}")
-        block = self.blocks[list(self.blocks.keys())[int(input("Enter number: "))-1]]
-
-        parsed_block = parse(block, self.config)
-        for part in parsed_block:
-            if is_text(part, self.config):
-                text += Text(part, self.config).process(options)
+        parsed_block = parse(self.blocks[options[self.name]], self.config)
+        final_output = ""
+        for block in parsed_block:
+            if is_text(block, self.config):
+                final_output += Text(block, self.config).process(options, defaults)
             else:
-                text += Block(part, self.config).process(options)
+                final_output += Block(block, self.config).process(options, defaults)
 
-        return text
+        return final_output
 
 class File():
     name: str
