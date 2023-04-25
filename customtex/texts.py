@@ -42,7 +42,7 @@ def is_text(text: str, config: Config) -> bool:
     beg_block, _ = config.block_regex()
     return not re.fullmatch(beg_block, text.splitlines()[0])
 
-
+# FIXME: Vars, multi and blocks could have the same names and that shouldn't be allowed
 class Text():
     """Base class for text units without blocks in it.
 
@@ -52,10 +52,10 @@ class Text():
         The text of the tag
     config : Config
         The config used to parse to find tags
-    variables : dict[str, tuple[str, bool]]
-        A dictionary of variables and their default values
+    variables : list[str]
+        A dictionary of variable names
     multi : dict[str, tuple[list[str], bool]]
-        A dictionary of multioptions and their possible values and default
+        A dictionary of multioption names and their possible options
 
     Methods
     -------
@@ -69,37 +69,29 @@ class Text():
         asks the user for the missing options"""
     text: str
     config: Config
-    variables: dict[str, tuple[str, bool]]
-    multi: dict[str, tuple[list[str], bool]]
+    variables: list[str]
+    multi: dict[str, list[str]]
 
     def __init__(self, text: str, config: Config) -> None:
         self.text = text
         self.config = config
 
         # Get variables
-        self.variables = {}
-        for match in re.findall(config.var_regex(), text):
-            name, is_default, default = match[0], match[1], match[3]
-            if name in self.variables:
-                if is_default:
-                    raise ValueError(f"Variable '{name}' already has a default value")
-            else:
-                self.variables[name] = (default, bool(is_default))
+        self.variables = []
+        for name in re.findall(config.var_regex(), text):
+            if name not in self.variables:
+                self.variables.append(name)
 
         # Get multioptions
         self.multi = {}
         for match in re.findall(config.multi_regex(), text):
-            name, is_definition, is_default, options = match[0], match[2], match[3], match[4]
-            if name in self.variables:
-                raise ValueError(f"Multioption '{name}' already exists as a variable")
-            elif name in self.multi:
-                if is_default:
-                    raise ValueError(f"Multioption '{name}' already has a default value")
-            elif is_definition:
-                self.multi[name] = (options.split(config.options_separator), bool(is_default))
-            else:
-                raise ValueError(f"Multioption '{name}' is not defined")
-
+            name = match[0]
+            if name not in self.multi:
+                options = match[2]
+                if options:
+                    self.multi[name] = options.split(config.options_separator)
+                else:
+                    raise ValueError(f"Multioption '{name}' has no options in its first appearance")
                 
     def replace(self, options: dict[str, str]) -> str:
         """Returns the text with the given options replaced."""
@@ -109,32 +101,25 @@ class Text():
 
         return text
     
-    def process(self, options: dict[str, str], defaults=False) -> str:
-        """Returns the text with the given options replaced and the missing options asked to the user.
-        If defaults is True, the default values will be used instead of asking the user."""
+    def process(self, options: dict[str, str]) -> str:
+        """Returns the text with the given options replaced and the missing options asked to the user."""
         # Process variables
-        for name, (default, has_default) in self.variables.items():
+        for name in self.variables:
             if name not in options:
-                if has_default and defaults:
-                    options[name] = default
-                else:
-                    options[name] = input(f"Enter value for variable '{name}': ")
+                print(f"Enter value for variable '{name}':")
+                options[name] = input("Enter value: ")
 
         # Process multioptions
-        for name, (options_list, has_default) in self.multi.items():
+        for name, multi_options in self.multi.items():
             if name not in options:
-                if has_default and defaults:
-                    options[name] = options_list[0]
-                else:
-                    print(f"Choose option for multioption '{name}':")
-                    for i, option in enumerate(options_list):
-                        print(f"  {i+1}. {option}")
-                    # TODO: Check if input is valid
-                    options[name] = options_list[int(input("Enter number: "))-1]
+                print(f"Select option for multioption '{name}':")
+                for i, option in enumerate(multi_options):
+                    print(f"{i+1}: {option}")
+                options[name] = multi_options[int(input("Enter option: "))-1] # TODO: Check if valid option
 
         return self.replace(options)
 
-class Block(Text): # FIXME: Use default values for blocks
+class Block(Text):
     """Subclass of Text for text units that are blocks.
 
     Attributes
@@ -189,23 +174,21 @@ class Block(Text): # FIXME: Use default values for blocks
                 else:
                     raise ValueError(f"Block '{line}' is not a valid block")
 
-    def process(self, options: dict[str, str], defaults=False) -> str:
-        """Returns the block with the given options replaced and the missing options asked to the user.
-        If defaults is True, the default values will be used instead of asking the user."""
+    def process(self, options: dict[str, str]) -> str:
+        """Returns the block with the given options replaced and the missing options asked to the user."""
         if self.name not in options:
             blocks = list(self.blocks.keys())
             print(f"Choose block for '{self.name}':")
             for i, block_name in enumerate(blocks):
                 print(f"  {i+1}. {block_name}")
-            # TODO: Check if input is valid
-            options[self.name] = blocks[int(input("Enter number: "))-1]
+            options[self.name] = blocks[int(input("Enter number: "))-1] # TODO: Check if input is valid
 
         parsed_block = parse(self.blocks[options[self.name]], self.config)
         final_output = ""
         for block in parsed_block:
             if is_text(block, self.config):
-                final_output += Text(block, self.config).process(options, defaults)
+                final_output += Text(block, self.config).process(options)
             else:
-                final_output += Block(block, self.config).process(options, defaults)
+                final_output += Block(block, self.config).process(options)
 
         return final_output

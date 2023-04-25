@@ -77,11 +77,11 @@ options_separator={self.options_separator!r})"
     
     def var_regex(self, name=TAG_NAME) -> str:
         """Returns a regex string that matches a variable tag."""
-        return self.start_tag + r"var:(" + name + r")((=)(.*?)){0,1}" + self.end_tag
+        return self.start_tag + r"var:(" + name + r")" + self.end_tag
     
     def multi_regex(self, name=TAG_NAME) -> str:
         """Returns a regex string that matches a multioption tag."""
-        return self.start_tag + r"multi:(" + name + r")((=)(=){0,1}(.*?(\|.*?)+?)){0,1}" + self.end_tag
+        return self.start_tag + r"multi:(" + name + r")(=(.*?(\|.*?)+?)){0,1}" + self.end_tag
     
     def block_regex(self, name=TAG_NAME) -> tuple[str, str]:
         """Returns a tuple of regex strings that match the start and end of a block tag."""
