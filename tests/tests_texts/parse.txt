@@ -1,5 +1,0 @@
-Hola.
-
-<block:hola>
-Adios
-<endblock:hola>
