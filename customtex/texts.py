@@ -73,6 +73,10 @@ class Text():
     multi: dict[str, list[str]]
 
     def __init__(self, text: str, config: Config) -> None:
+        """TODO: Explain
+
+        Exceptions: 
+            ValueError: If the first apparence of a multioptions has no options"""
         self.text = text
         self.config = config
 
@@ -146,6 +150,10 @@ class Block(Text):
     blocks: dict[str, str]
 
     def __init__(self, text: str, config: Config) -> None:
+        """TODO: Explanation
+
+        Exceptions:
+            ValueError: """
         self.text = text
         self.config = config
 
