@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ExodiusStudios.comment-anchors",
+        "redhat.vscode-yaml"
+    ],
+    "unwantedRecommendations": [
+        "James-Yu.latex-workshop"
+    ]
+}
