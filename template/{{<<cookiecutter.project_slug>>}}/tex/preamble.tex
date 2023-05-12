@@ -1,0 +1,253 @@
+%=== Language ===%
+\usepackage[<< cookiecutter.language.name >>]{babel}
+
+
+<%- if cookiecutter.margins %>
+%=== Margins ('geometry' package) ===%
+\usepackage[<< cookiecutter.margins >>]{geometry}
+<%- endif %>
+
+
+%=== 'Xcolor' package ===%
+\usepackage[svgnames]{xcolor}
+
+
+%=== 'Hyperref' package ===%
+<%- if cookiecutter.hyperref %>
+\usepackage{hyperref}
+<%- endif %>
+<%- if cookiecutter.hyperref_setup == "style" and cookiecutter.hyperref %>
+Style
+<%- endif %>
+
+
+%=== 'Graphicx' package ===%
+\usepackage{graphicx}
+<%- if cookiecutter.graphicxpath %>
+\graphicspath{ {<< cookiecutter.graphicxpath >>} }
+<%- endif %>
+
+
+%=== 'Titling' package ===%
+\usepackage{titling}
+
+%== Using the '<< cookiecutter.title_style >>' title style ==%
+<%- if cookiecutter.title_style == "napkin" %>
+\pretitle{\begin{center}\LARGE\sffamily\bfseries}
+\posttitle{\end{center}}
+
+\preauthor{\begin{center}\large\sffamily\begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\end{center}}
+
+\predate{\begin{center}\large\sffamily}
+\postdate{\end{center}}
+<%- elif cookiecutter.title_style == "ruled" %>
+\pretitle{\hrule\begin{center}\Large\sffamily\bfseries\color{MidnightBlue}}
+  \posttitle{\end{center}\hrule}
+
+  \preauthor{\begin{center}\large\sffamily\begin{tabular}[t]{c}}
+  \postauthor{\end{tabular}\end{center}}
+  
+  \predate{\begin{center}\large\sffamily}
+  \postdate{\end{center}}
+<%- endif %>
+
+
+%=== 'Titlesec' package ===%
+\usepackage{titlesec}
+<%- if cookiecutter.section_style == "napkin" %>
+<%- if cookiecutter.documentclass == "article" %>
+\titleformat{\section}{\huge\sffamily\bfseries}
+  {\color{purple}{\normalfont\sffamily\S}\thesection}
+  {1ex}{}
+
+\titleformat{\subsection}{\LARGE\sffamily\bfseries}
+  {\color{purple}{\normalfont\sffamily\S}\thesubsection}
+  {1ex}{}
+
+\titleformat{\subsubsection}{\Large\sffamily\bfseries}
+  {\color{purple}{\normalfont\sffamily\S}\thesubsubsection}
+  {1ex}{}
+<% else %>
+\titleformat{\part}[display]{\Huge\bfseries\filcenter}
+  {\color{purple}\scalebox{2.5}{\thepart}}
+  {1ex}{}
+
+\titleformat{\chapter}{\huge\sffamily\bfseries}
+  {\color{purple}\scalebox{2.5}{\thechapter}}
+  {1ex}{}
+
+\titleformat{\section}{\LARGE\sffamily\bfseries}
+  {\color{purple}{\normalfont\sffamily\S}\thesection}
+  {1ex}{}
+
+\titleformat{\subsection}{\Large\sffamily\bfseries}
+  {\color{purple}{\normalfont\sffamily\S}\thesubsection}
+  {1ex}{}
+<%- endif %>
+<% elif cookiecutter.section_style == "ruled" %>
+<%- if cookiecutter.documentclass == "article" %>
+\titleformat{\section}{\LARGE\sffamily\bfseries}
+  {\huge\color{purple}\thesection}
+  {1ex}{}
+
+\titleformat{\subsection}{\Large\sffamily\bfseries}
+  {\LARGE\color{purple}\thesubsection}
+  {1ex}{}
+
+\titleformat{\subsubsection}{\large\sffamily\bfseries}
+  {\Large\color{purple}\thesubsubsection}
+  {1ex}{}
+<% else %>
+\titleformat{\section}{\LARGE\sffamily\bfseries}
+  {\huge\color{purple}\thesection}
+  {1ex}{}
+
+\titleformat{\subsection}{\Large\sffamily\bfseries}
+  {\LARGE\color{purple}\thesubsection}
+  {1ex}{}
+
+\titleformat{\subsubsection}{\large\sffamily\bfseries}
+  {\Large\color{purple}\thesubsubsection}
+  {1ex}{}
+<%- endif %>
+<%- endif %>
+
+
+<%- if cookiecutter.math %>
+%=== Math packages ===%
+%== Basic packages ==%
+\usepackage{mathtools}
+\usepackage{amssymb}
+
+%== Theorem packages and definitions ==%
+\usepackage{amsthm}
+\usepackage{thmtools}
+
+<%- if cookiecutter.theorems_style == "boxed" %>
+\mdfdefinestyle{bluebox}{
+  roundcorner=10pt,
+  linewidth=1pt,
+  innerbottommargin=9pt,
+  linecolor=MediumBlue,
+  backgroundcolor=MediumBlue!10,
+}
+\mdfdefinestyle{redbox}{
+  linewidth=0.5pt,
+  innerbottommargin=9pt,
+  linecolor=FireBrick,
+  backgroundcolor=FireBrick!5,
+}
+\mdfdefinestyle{greenbox}{
+  linewidth=2pt,
+  leftline=true,
+  rightline=false,
+  topline=false,
+  bottomline=false,
+  innerbottommargin=9pt,
+  linecolor=ForestGreen,
+  backgroundcolor=ForestGreen!5,
+}
+\mdfdefinestyle{blackbox}{
+  linewidth=2pt,
+  leftline=true,
+  rightline=false,
+  topline=false,
+  bottomline=false,
+  innerbottommargin=9pt,
+  linecolor=black,
+  backgroundcolor=black!5,
+}
+
+\declaretheoremstyle[
+  mdframed={style=bluebox},
+  headfont=\sffamily\bfseries\color{MediumBlue},
+  headpunct={\\[1ex]}
+]{thmstyle}
+\declaretheoremstyle[
+  mdframed={style=redbox},
+  headfont=\sffamily\bfseries\color{FireBrick},
+  headpunct={:}
+]{defstyle}
+\declaretheoremstyle[
+  mdframed={style=greenbox},
+  headfont=\sffamily\bfseries\color{ForestGreen},
+  headpunct={ ---}
+]{exmstyle}
+\declaretheoremstyle[
+  mdframed={style=blackbox},
+  headfont=\sffamily\bfseries\color{black},
+]{prbstyle}
+<% elif cookiecutter.theorems_style == "colors" %>
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries\color{MediumBlue},
+  headpunct={},
+  postheadspace=1em
+]{thmstyle}
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries\color{FireBrick},
+  headpunct={:}
+]{defstyle}
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries\color{ForestGreen},
+  headpunct={ ---}
+]{exmstyle}
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries\color{black},
+]{prbstyle}
+<% elif cookiecutter.theorems_style == "plain" %>
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries,
+  headpunct={},
+  postheadspace=1em
+]{thmstyle}
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries,
+  headpunct={:}
+]{defstyle}
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries,
+  headpunct={ ---}
+]{exmstyle}
+\declaretheoremstyle[
+  headfont=\sffamily\bfseries,
+]{prbstyle}
+<%- endif %>
+
+%= Theorem like environments =%
+\declaretheorem[name=<< cookiecutter.language.theorem >>, style=thmstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{theorem}
+\declaretheorem[name=<< cookiecutter.language.theorem >>, style=thmstyle,  numbered=no]{theorem*}
+\declaretheorem[name=<< cookiecutter.language.proposition >>, style=thmstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{proposition}
+\declaretheorem[name=<< cookiecutter.language.proposition >>, style=thmstyle,  numbered=no]{proposition*}
+\declaretheorem[name=<< cookiecutter.language.corollary >>, style=thmstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{corollary}
+\declaretheorem[name=<< cookiecutter.language.corollary >>, style=thmstyle,  numbered=no]{corollary*}
+\declaretheorem[name=<< cookiecutter.language.lemma >>, style=thmstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{lemma}
+\declaretheorem[name=<< cookiecutter.language.lemma >>, style=thmstyle,  numbered=no]{lemma*}
+\declaretheorem[name=<< cookiecutter.language.conjecture >>, style=thmstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{conjecture}
+\declaretheorem[name=<< cookiecutter.language.conjecture >>, style=thmstyle,  numbered=no]{conjecture*}
+%= Definition like environments =%
+\declaretheorem[name=<< cookiecutter.language.definition >>, style=defstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{definition}
+\declaretheorem[name=<< cookiecutter.language.definition >>, style=defstyle,  numbered=no]{definition*}
+\declaretheorem[name=<< cookiecutter.language.notation >>, style=defstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{notation}
+\declaretheorem[name=<< cookiecutter.language.notation >>, style=defstyle,  numbered=no]{notation*}
+%= Example like environments =%
+\declaretheorem[name=<< cookiecutter.language.example >>, style=exmstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{example}
+\declaretheorem[name=<< cookiecutter.language.example >>, style=exmstyle,  numbered=no]{example*}
+\declaretheorem[name=<< cookiecutter.language.remark >>, style=exmstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{remark}
+\declaretheorem[name=<< cookiecutter.language.remark >>, style=exmstyle,  numbered=no]{remark*}
+%= Problem like environments =%
+\declaretheorem[name=<< cookiecutter.language.problem >>, style=prbstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{problem}
+\declaretheorem[name=<< cookiecutter.language.problem >>, style=prbstyle,  numbered=no]{problem*}
+\declaretheorem[name=<< cookiecutter.language.question >>, style=prbstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{question}
+\declaretheorem[name=<< cookiecutter.language.question >>, style=prbstyle,  numbered=no]{question*}
+\declaretheorem[name=<< cookiecutter.language.exercise >>, style=prbstyle,  numberwithin=<< cookiecutter.theorems_numbering >>]{exercise}
+\declaretheorem[name=<< cookiecutter.language.exercise >>, style=prbstyle,  numbered=no]{exercise*}
+
+%= Custom proof environments =%
+\newenvironment{cproof}{\begin{proof}
+  \color{MidnightBlue} \renewcommand{\qed}{}}{\end{proof}}
+\newenvironment{solution}{\begin{proof}[<< cookiecutter.language.solution >>]
+  \renewcommand{\qed}{}}{\end{proof}}
+\newenvironment{csolution}{\begin{proof}[<< cookiecutter.language.solution >>]
+  \color{MidnightBlue} \renewcommand{\qed}{}}{\end{proof}}
+<%- endif %>
