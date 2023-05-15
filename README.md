@@ -3,6 +3,7 @@
 ## TODO
 - revise spacing (also when generated the project) and commenting style
 - remove curly braces of the main folder name when template is created
+- git support
 - graphicspath create folder
 - hyperref setups
 - latexmk file support
