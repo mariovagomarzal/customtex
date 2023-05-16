@@ -15,6 +15,11 @@ class Config:
         """Initialize the configuration."""
         self.default_context = kwargs
 
+    def echo(self) -> None:
+        """Return a string representation of the configuration."""
+        for key, value in self.default_context.items():
+            click.echo(f"{key}: {value}")
+
     @staticmethod
     def load(path: Path) -> "Config":
         """Load the configuration from a file."""

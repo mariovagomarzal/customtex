@@ -97,3 +97,20 @@ def test_new_with_template(
             main_tex = f.read()
 
         assert "\\author{Example Name}" in main_tex
+
+
+def test_config_show(cli_runner: CliRunner, fake_config_dir: Path):
+    """Test the 'config --show' command."""
+    result = debug_invoke(
+        cli_runner,
+        "--config-dir", fake_config_dir,
+        "config",
+        "--show"
+    )
+
+    assert result.exit_code == 0
+    assert "Example Name" in result.output
+
+def test_config_edit(cli_runner: CliRunner, fake_config_dir: Path):
+    """Test the 'config --edit' command."""
+    # TODO

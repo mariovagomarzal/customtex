@@ -7,10 +7,11 @@ import click
 from cookiecutter.main import cookiecutter
 
 from customtex import __version__
-from customtex.config import setup_config_dir
+from customtex.config import Config, setup_config_dir
 from customtex.defaults import (
     COOKIECUTTER_TEMPLATE,
     CUSTOMTEX_FOLDER,
+    CONFIG_FILE,
     get_langs,
     set_main_language,
 )
@@ -42,6 +43,14 @@ def confirm_reset() -> bool:
         ),
         abort=True
     )
+
+
+def config_file_exists(path: Path) -> bool:
+    if not path.exists():
+        echo_error(f"Configuration file '{path}' does not exist.")
+        return False
+    else:
+        return True
 
 
 def version_msg():
@@ -158,11 +167,10 @@ def new(
     # Handle configuration file
     if config:
         config_file = ctx.obj["CONFIG_DIR"] / "config.yaml"
-        if not config_file.exists():
-            echo_error(f"Configuration file '{config_file}' does not exist.")
-            sys.exit(1)
-        else:
+        if config_file_exists(config_file):
             echo_info(f"Using configuration file '{config_file}'.")
+        else:
+            sys.exit(1)
     else:
         config_file = None
 
@@ -197,8 +205,26 @@ def new(
 
 # 'config' subcommand
 @main.command()
+@click.option("--show/--no-show", default=True, help="Show configuration file.")
+@click.option("--edit", is_flag=True, help="Edit configuration file.")
 @click.pass_context
-def config(ctx):
+def config(ctx, show: bool, edit: bool):
     """Manage configuration file (of the given configuration directory)."""
-    # TODO: Implement
-    pass
+    config_dir = ctx.obj["CONFIG_DIR"]
+    config_file = config_dir / CONFIG_FILE
+
+    if config_file_exists(config_file):
+        config = Config().load(config_file)
+    else:
+        sys.exit(1)
+
+    # Show configuration file
+    if show:
+        config.echo()
+
+    # Edit configuration file
+    if edit:
+        config.edit()
+        config.save(config_file)
+
+    sys.exit(0)
