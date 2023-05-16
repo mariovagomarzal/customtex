@@ -8,7 +8,12 @@ from cookiecutter.main import cookiecutter
 
 from customtex import __version__
 from customtex.config import setup_config_dir
-from customtex.defaults import COOKIECUTTER_TEMPLATE, CUSTOMTEX_FOLDER, LANGUAGES
+from customtex.defaults import (
+    COOKIECUTTER_TEMPLATE,
+    CUSTOMTEX_FOLDER,
+    get_langs,
+    set_main_language,
+)
 
 
 # Auxiliary and echo functions
@@ -46,13 +51,6 @@ def version_msg():
     return f"CustomTeX {__version__} from {location} (Python {python_version})"
 
 
-def get_langs():
-    """Return a list of available languages."""
-    langs = []
-    for lang in LANGUAGES.keys():
-        langs.append(lang)
-    return langs
-
 
 # Main command for 'customtex'
 @click.group()
@@ -73,24 +71,23 @@ def main(ctx, debug: bool, reset: bool, config_dir: Path):
     ctx.obj["DEBUG"] = debug
 
     # Handle configuration directory preferences
-    if not debug:
-        if not config_dir:
-            ctx.obj["CONFIG_DIR"] = CUSTOMTEX_FOLDER
+    if not config_dir and not debug:
+        ctx.obj["CONFIG_DIR"] = CUSTOMTEX_FOLDER
 
-            # Handle creation of configuration directory
-            if reset:
-                reset = confirm_reset()
+        # Handle creation of configuration directory
+        if reset:
+            reset = confirm_reset()
 
-            if not CUSTOMTEX_FOLDER.exists() or reset:
-                echo_info("Configuration directory is going to be created.")
-                setup_config_dir(CUSTOMTEX_FOLDER)
-                echo_success(f"Created configuration directory at {CUSTOMTEX_FOLDER}.")
-        else:
-            ctx.obj["CONFIG_DIR"] = config_dir
-            echo_info(f"Using custom configuration directory at {config_dir}.")
+        if not CUSTOMTEX_FOLDER.exists() or reset:
+            echo_info("Configuration directory is going to be created.")
+            setup_config_dir(CUSTOMTEX_FOLDER)
+            echo_success(f"Created configuration directory at {CUSTOMTEX_FOLDER}.")
     else:
-        ctx.obj["CONFIG_DIR"] = Path.cwd() / ".customtex" # For testing purposes
-        echo_info("Running in debug mode.")
+        if config_dir:
+            ctx.obj["CONFIG_DIR"] = config_dir
+        else: # If debug, but no config_dir is given
+            ctx.obj["CONFIG_DIR"] = Path().cwd() / ".customtex" # Testing purposes
+        echo_info(f"Using custom configuration directory at {config_dir}.")
 
     if ctx.invoked_subcommand is None:
         sys.exit(0)
@@ -137,10 +134,11 @@ def new(
     # Get extra context if template is specified
     if template:
         templates_dir = ctx.obj["CONFIG_DIR"] / "templates"
-        template_path = templates_dir / template
+        template_path = templates_dir / (template + ".json")
         if template_path.exists():
             with open(template_path) as template_file:
                 extra_context = json.load(template_file)
+            echo_info(f"Using template '{template}' for extra context.")
         else:
             echo_error(f"Template '{template}' does not exist.")
             sys.exit(1)
@@ -155,7 +153,7 @@ def new(
     if date:
         extra_context["date"] = date
     if language:
-        extra_context["language"] = [LANGUAGES[language]]
+        extra_context["language"] = set_main_language(language)
 
     # Handle configuration file
     if config:
@@ -163,31 +161,36 @@ def new(
         if not config_file.exists():
             echo_error(f"Configuration file '{config_file}' does not exist.")
             sys.exit(1)
+        else:
+            echo_info(f"Using configuration file '{config_file}'.")
     else:
         config_file = None
 
-    if not ctx.obj["DEBUG"]:
-        # Create the project
-        echo_info(f"Creating project in '{output_dir}'...")
-        result = cookiecutter(
-            template=str(COOKIECUTTER_TEMPLATE),
-            no_input=not prompt,
-            extra_context=extra_context,
-            overwrite_if_exists=overwrite,
-            config_file=str(config_file),
-            output_dir=str(output_dir),
+    # Override possible output directory for testing purposes
+    if ctx.obj["DEBUG"]:
+        output_dir = Path().cwd()
+
+    # Create the project
+    echo_info(f"Creating project in '{output_dir}'...")
+    result = cookiecutter(
+        template=str(COOKIECUTTER_TEMPLATE),
+        no_input=not prompt,
+        extra_context=extra_context,
+        overwrite_if_exists=overwrite,
+        config_file=config_file,
+        output_dir=str(output_dir),
+    )
+
+    # Due to a bug in cookiecutter with the jinja2 delimiters, 
+    # the project directory is created with '{{' and '}}' in the name.
+    # This is a workaround to fix that.
+    project_dir = Path(result)
+    if project_dir.name.startswith("{{") and project_dir.name.endswith("}}"):
+        project_dir = project_dir.rename(
+            project_dir.parent / project_dir.name[2:-2]
         )
 
-        # Due to a bug in cookiecutter with the jinja2 delimiters, 
-        # the project directory is created with '{{' and '}}' in the name.
-        # This is a workaround to fix that.
-        project_dir = Path(result)
-        if project_dir.name.startswith("{{") and project_dir.name.endswith("}}"):
-            project_dir = project_dir.rename(
-                project_dir.parent / project_dir.name[2:-2]
-            )
-
-        echo_success(f"Project created successfully at {project_dir}.")
+    echo_success(f"Project created successfully at {project_dir}.")
 
     sys.exit(0)
 

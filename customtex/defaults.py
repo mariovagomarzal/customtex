@@ -1,6 +1,7 @@
 """This module contains default values of the package."""
 from pathlib import Path
 
+
 # Main folders and files
 COOKIECUTTER_TEMPLATE = Path(__file__).parent.parent / "template"
 CUSTOMTEX_FOLDER = Path().home() / ".customtex"
@@ -58,3 +59,15 @@ LANGUAGES = {
         "solution": "Solució"
     }
 }
+
+def get_langs() -> list[str]:
+    """Return a list of available languages."""
+    return list(LANGUAGES.keys())
+
+def set_main_language(lang: str) -> list[dict[str, str]]:
+    """Return a list of dictionaries with the main language first."""
+    langs = get_langs()
+    langs.remove(lang)
+    langs.insert(0, lang)
+    return [LANGUAGES[lang] for lang in langs]
+    
