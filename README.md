@@ -1,4 +1,4 @@
-# CustomTeX
+# CustomTeX v1.0.0-alpha
 
 ## TODO
 - revise spacing (also when generated the project) and commenting style

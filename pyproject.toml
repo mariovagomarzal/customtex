@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "customtex"
-version = "0.1.2"
+version = "1.0.0-alpha"
 description = "A CLI utility for setting up LaTeX projects"
 authors = ["Mario Vago Marzal <mariovagomarzal@gmail.com>"]
 license = "MIT"
