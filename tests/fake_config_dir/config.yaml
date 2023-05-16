@@ -1,2 +1,3 @@
 default_context:
+  title: "Example title"
   author: "Example Name"

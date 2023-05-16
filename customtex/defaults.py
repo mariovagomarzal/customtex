@@ -70,4 +70,12 @@ def set_main_language(lang: str) -> list[dict[str, str]]:
     langs.remove(lang)
     langs.insert(0, lang)
     return [LANGUAGES[lang] for lang in langs]
-    
+
+
+# Default configuration
+DEFAULT_CONFIG = {
+    "title": "Custom\\TeX Project",
+    "author": "Your Name",
+    "date": "\\today",
+    "language": set_main_language("english")
+}

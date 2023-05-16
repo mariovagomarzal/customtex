@@ -1,4 +1,4 @@
-"""Tests for the CustomTeX CLI module."""
+"""Tests for the 'cli' module."""
 from pathlib import Path
 
 import pytest

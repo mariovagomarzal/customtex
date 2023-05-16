@@ -195,8 +195,10 @@ def new(
     sys.exit(0)
 
 
-@main.command(help="Manage user configuration.")
+# 'config' subcommand
+@main.command()
 @click.pass_context
 def config(ctx):
+    """Manage configuration file (of the given configuration directory)."""
     # TODO: Implement
     pass
