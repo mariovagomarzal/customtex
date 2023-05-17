@@ -1,10 +1,16 @@
 """Config class and functions."""
 from pathlib import Path
-import yaml
 
 import click
+import yaml
 
-from customtex.defaults import TEMPLATES_FOLDER, CONFIG_FILE, DEFAULT_CONFIG
+from customtex.defaults import (
+    CONFIG_FILE,
+    DEFAULT_CONFIG,
+    LANGUAGES,
+    TEMPLATES_FOLDER,
+    set_main_language,
+)
 
 
 class Config:
@@ -36,11 +42,18 @@ class Config:
     def edit(self) -> None:
         """Edit the configuration."""
         for key, value in self.default_context.items():
-            self.default_context[key] = click.prompt(
-                click.style(f"{key}:", fg="blue"), 
-                default=value
-            )
-
+            if key == "language":
+                lang_key = click.prompt(
+                    f"{key}",
+                    type=click.Choice(list(LANGUAGES.keys())),
+                    default=value[0]["name"],
+                )
+                self.default_context[key] = set_main_language(lang_key)
+            else:
+                self.default_context[key] = click.prompt(
+                    f"{key}",
+                    default=value
+                )
 
 
 def setup_config_dir(path: Path) -> Path:
